@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:practice/home_page.dart';
+import 'package:practice/library_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,6 +17,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int count = 0;
+  int _currentIndex = 0;
+  final tabs = [
+    HomePage(),
+    LibraryPage(),
+    Center(child: Text("Search")),
+    Center(child: Text("Profile")),
+  ];
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -27,67 +36,53 @@ class _MyAppState extends State<MyApp> {
                 fontWeight: FontWeight.bold, color: Color(0xffEEEEEE)),
           ),
         ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 58.0),
-          child: FloatingActionButton(
-            backgroundColor: Color(0xff00ADB5),
-            child: Icon(Icons.add),
-            onPressed: () {
-              setState(() {
-                count++;
-              });
-            },
-          ),
-        ),
         drawer: Drawer(),
         body: DefaultTabController(
           length: 4,
           child: Stack(
             children: [
-              Container(
-                color: Color(0xffEEEEEE),
-                width: 500,
-                height: 1000,
-              ),
+              // Container(
+              //   color: Color(0xffEEEEEE),
+              //   width: 500,
+              //   height: 1000,
+              // ),
               Container(
                 height: double.infinity,
                 width: double.infinity,
               ),
               Scaffold(
-                bottomNavigationBar: Padding(
-                  padding: EdgeInsets.only(bottom: 20),
-                  child: TabBar(
-                    tabs: <Widget>[
-                      Tab(
-                        icon: Icon(Icons.home),
-                      ),
-                      Tab(
-                        icon: Icon(Icons.video_collection),
-                      ),
-                      Tab(
-                        icon: Icon(Icons.call),
-                      ),
-                      Tab(
-                        icon: Icon(Icons.account_circle_rounded),
-                      )
+                  body: tabs[_currentIndex],
+                  bottomNavigationBar: BottomNavigationBar(
+                    currentIndex: _currentIndex,
+                    iconSize: 25,
+                    type: BottomNavigationBarType.fixed,
+                    selectedFontSize: 15,
+                    unselectedFontSize: 10,
+                    selectedItemColor: Color(0xff00ADB5),
+                    items: [
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.home),
+                          label: "Home",
+                          backgroundColor: Color(0xff393E46)),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.video_collection_rounded),
+                          label: "Library",
+                          backgroundColor: Color(0xff393E46)),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.search_outlined),
+                          label: "Search",
+                          backgroundColor: Color(0xff393E46)),
+                      BottomNavigationBarItem(
+                          icon: Icon(Icons.account_circle_outlined),
+                          label: "Profile",
+                          backgroundColor: Color(0xff393E46)),
                     ],
-                    labelColor: Color(0xff00ADB5),
-                    indicator: UnderlineTabIndicator(
-                      borderSide:
-                          BorderSide(color: Color(0xff00ADB5), width: 4.0),
-                      insets: EdgeInsets.only(bottom: 44),
-                    ),
-                    unselectedLabelColor: Color(0xff393E46),
-                  ),
-                ),
-              ),
-              Align(
-                child: Text(
-                  '$count',
-                  style: TextStyle(fontSize: 30, color: Color(0xff393E46)),
-                ),
-                alignment: Alignment.center,
-              )
+                    onTap: (index) {
+                      setState(() {
+                        _currentIndex = index;
+                      });
+                    },
+                  )),
             ],
           ),
         ),
